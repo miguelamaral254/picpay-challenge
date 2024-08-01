@@ -1,0 +1,6 @@
+rootProject.name = 'Desafio-pic-pay'
+include 'core'
+include 'usecase'
+include 'application'
+include 'infrastructure'
+
