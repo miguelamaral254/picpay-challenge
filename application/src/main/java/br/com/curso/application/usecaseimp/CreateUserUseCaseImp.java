@@ -46,5 +46,6 @@ public class CreateUserUseCaseImp implements CreateUserUseCase {
             throw new InternalServerErrorException(ErrorCodeEnum.ON0004.getCode(), ErrorCodeEnum.ON0004.getMessage());
         }
 
+
     }
 }

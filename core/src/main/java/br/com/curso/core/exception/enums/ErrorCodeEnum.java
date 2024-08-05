@@ -8,10 +8,15 @@ public enum ErrorCodeEnum {
 
     TR0001("Logist usaer doesnt have the transfer function available", "TR-0001"),
     TR0002("Unavailable balance", "TR-0002"),
-    TR0003("There was an error when performing the transfer", "TR-0003"),
+    TR0003("An error occurred while performing the transfer", "TR-0003"),
+    TR0004("Transfer not allowed", "TR-0004"),
     TRP0001("Invalid Pin","TRP-0001"),
 
-    WA0001("Wallet not found!","WA-0001")
+    WA0001("Wallet not found!","WA-0001"),
+
+    NO0001("An error occurred while notifying the transfer","NO-0001"),
+
+    ATH0001("An error occourred while authenticate","ATH-0001")
 ;
     private String message;
     private String code;

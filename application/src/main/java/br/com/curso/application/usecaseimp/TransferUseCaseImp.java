@@ -1,13 +1,11 @@
 package br.com.curso.application.usecaseimp;
 
 import br.com.curso.application.getway.TransferGateway;
-import br.com.curso.core.CreateTransactionUseCase;
-import br.com.curso.core.FindWalletByTaxNumberUseCase;
-import br.com.curso.core.TransactionValidateUseCase;
-import br.com.curso.core.TransferUseCase;
+import br.com.curso.core.*;
 import br.com.curso.core.domain.Transaction;
 import br.com.curso.core.domain.Wallet;
 import br.com.curso.core.exception.InternalServerErrorException;
+import br.com.curso.core.exception.NotFoundException;
 import br.com.curso.core.exception.TransferException;
 import br.com.curso.core.exception.enums.ErrorCodeEnum;
 
@@ -19,16 +17,18 @@ public class TransferUseCaseImp implements TransferUseCase {
     private TransactionValidateUseCase transactionValidateUseCase;
     private CreateTransactionUseCase createTransactionUseCase;
     private TransferGateway transferGateway;
+    private UserNotificationUseCase userNotificationUseCase;
 
-    public TransferUseCaseImp(FindWalletByTaxNumberUseCase findWalletByTaxNumberUseCase, TransactionValidateUseCase transactionValidateUseCase, CreateTransactionUseCase createTransactionUseCase, TransferGateway transferGateway) {
+    public TransferUseCaseImp(FindWalletByTaxNumberUseCase findWalletByTaxNumberUseCase, TransactionValidateUseCase transactionValidateUseCase, CreateTransactionUseCase createTransactionUseCase, TransferGateway transferGateway, UserNotificationUseCase userNotificationUseCase) {
         this.findWalletByTaxNumberUseCase = findWalletByTaxNumberUseCase;
         this.transactionValidateUseCase = transactionValidateUseCase;
         this.createTransactionUseCase = createTransactionUseCase;
         this.transferGateway = transferGateway;
+        this.userNotificationUseCase = userNotificationUseCase;
     }
 
     @Override
-    public Boolean transfer(String fromTaxNumber,String toTaxNumber, BigDecimal amount ) throws InternalServerErrorException, TransferException {
+    public Boolean transfer(String fromTaxNumber,String toTaxNumber, BigDecimal amount ) throws InternalServerErrorException, TransferException, NotFoundException {
         Wallet from = findWalletByTaxNumberUseCase.findByTaxNumber(fromTaxNumber);
         Wallet to = findWalletByTaxNumberUseCase.findByTaxNumber(toTaxNumber);
 
@@ -44,10 +44,9 @@ public class TransferUseCaseImp implements TransferUseCase {
         if (!transferGateway.transfer(transaction)) {
             throw new InternalServerErrorException(ErrorCodeEnum.TR0003.getCode(), ErrorCodeEnum.TR0003.getMessage());
         }
-
-
-
-
+        if (!userNotificationUseCase.notificate(transaction, to.getUser().getEmail())){
+            throw new NotFoundException(ErrorCodeEnum.TR0002.getCode(), ErrorCodeEnum.TR0002.getMessage());
+        }
         return true;
     }
 }
