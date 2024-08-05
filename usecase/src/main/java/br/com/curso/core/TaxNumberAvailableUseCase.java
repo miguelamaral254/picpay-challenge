@@ -1,5 +1,5 @@
 package br.com.curso.core;
 
-public interface TaxNumberAvailable {
+public interface TaxNumberAvailableUseCase {
     boolean isTaxNumberAvailable(String taxNumber);
 }

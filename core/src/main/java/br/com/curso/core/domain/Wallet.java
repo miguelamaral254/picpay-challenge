@@ -43,20 +43,24 @@ public class Wallet {
         return balance;
     }
 
-  public void receiveValue(BigDecimal value) {
-        this.balance.add(value);
-
+  public void receiveValue(BigDecimal amount) {
+        this.balance.add(amount);
   }
-    public void transfer(BigDecimal value) throws TransferException {
+
+    public void transfer(BigDecimal amount) throws TransferException {
         if (this.user.getType() == UserTypeEnum.SHOPKEEPER) {
             throw new TransferException(ErrorCodeEnum.TR0001.getMessage(), ErrorCodeEnum.TR0001.getCode());
         }
 
-        if (this.balance.compareTo(value) < 0) {
+        if (this.balance.compareTo(amount) < 0) {
             throw new TransferException(ErrorCodeEnum.TR0002.getMessage(), ErrorCodeEnum.TR0002.getCode());
         }
-        this.balance.subtract(value);
+        this.balance.subtract(amount);
 
+    }
+
+    public void receiveTransfer(BigDecimal amount) throws TransferException {
+        this.balance.add(amount);
     }
     public User getUser() {
         return user;
