@@ -9,27 +9,29 @@ import java.time.LocalDate;
 
 public class Wallet {
     private Long id;
+    private TransactionPin transactionPin;
     private BigDecimal balance;
     private User user;
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
-    public Wallet(Long id, BigDecimal balance, User user, LocalDate createdAt, LocalDate updatedAt) {
+    public Wallet(Long id, TransactionPin transactionPin, BigDecimal balance, User user, LocalDate createdAt, LocalDate updatedAt) {
         this.id = id;
+        this.transactionPin = transactionPin;
         this.balance = balance;
         this.user = user;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public Wallet(BigDecimal balance, User user) {
+    public Wallet(TransactionPin transactionPin, BigDecimal balance, User user) {
+        this.transactionPin = transactionPin;
         this.balance = balance;
         this.user = user;
         this.createdAt = LocalDate.now();
     }
 
-    public Wallet() {
-    }
+
 
     public Long getId() {
         return id;
@@ -62,6 +64,15 @@ public class Wallet {
     public void receiveTransfer(BigDecimal amount) throws TransferException {
         this.balance.add(amount);
     }
+
+    public TransactionPin getTransactionPin() {
+        return transactionPin;
+    }
+
+    public void setTransactionPin(TransactionPin transactionPin) {
+        this.transactionPin = transactionPin;
+    }
+
     public User getUser() {
         return user;
     }
@@ -81,4 +92,5 @@ public class Wallet {
     public void setUpdatedAt(LocalDate updatedAt) {
         this.updatedAt = updatedAt;
     }
+
 }

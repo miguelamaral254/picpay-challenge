@@ -1,17 +1,22 @@
 plugins {
     id 'java'
+    id 'org.springframework.boot' version '3.2.5' // Ou a versão mais recente disponível
+    id 'io.spring.dependency-management' version '1.1.2'
 }
 
 group = 'br.com.curso'
 version = '1.0-SNAPSHOT'
+sourceCompatibility = '17' // Ou a versão do Java que você está usando
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'com.h2database:h2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 test {

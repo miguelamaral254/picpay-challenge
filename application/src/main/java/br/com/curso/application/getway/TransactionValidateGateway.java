@@ -1,7 +1,7 @@
 package br.com.curso.application.getway;
 
-import br.com.curso.core.domain.Transaction;
+import br.com.curso.core.domain.TransactionPin;
 
 public interface TransactionValidateGateway {
-    Boolean validate(Transaction transaction);
+    Boolean validate(TransactionPin transactionPin);
 }

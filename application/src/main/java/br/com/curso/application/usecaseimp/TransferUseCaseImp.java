@@ -4,9 +4,7 @@ import br.com.curso.application.getway.TransferGateway;
 import br.com.curso.core.*;
 import br.com.curso.core.domain.Transaction;
 import br.com.curso.core.domain.Wallet;
-import br.com.curso.core.exception.InternalServerErrorException;
-import br.com.curso.core.exception.NotFoundException;
-import br.com.curso.core.exception.TransferException;
+import br.com.curso.core.exception.*;
 import br.com.curso.core.exception.enums.ErrorCodeEnum;
 
 import java.math.BigDecimal;
@@ -18,19 +16,27 @@ public class TransferUseCaseImp implements TransferUseCase {
     private CreateTransactionUseCase createTransactionUseCase;
     private TransferGateway transferGateway;
     private UserNotificationUseCase userNotificationUseCase;
+    private TransactionPinValidateUseCase transactionPinValidateUseCase;
 
-    public TransferUseCaseImp(FindWalletByTaxNumberUseCase findWalletByTaxNumberUseCase, TransactionValidateUseCase transactionValidateUseCase, CreateTransactionUseCase createTransactionUseCase, TransferGateway transferGateway, UserNotificationUseCase userNotificationUseCase) {
+    public TransferUseCaseImp(FindWalletByTaxNumberUseCase findWalletByTaxNumberUseCase,
+                              TransactionValidateUseCase transactionValidateUseCase,
+                              CreateTransactionUseCase createTransactionUseCase,
+                              TransferGateway transferGateway, UserNotificationUseCase userNotificationUseCase,
+                              TransactionPinValidateUseCase transactionPinValidateUseCase) {
         this.findWalletByTaxNumberUseCase = findWalletByTaxNumberUseCase;
         this.transactionValidateUseCase = transactionValidateUseCase;
         this.createTransactionUseCase = createTransactionUseCase;
         this.transferGateway = transferGateway;
         this.userNotificationUseCase = userNotificationUseCase;
+        this.transactionPinValidateUseCase = transactionPinValidateUseCase;
     }
 
     @Override
-    public Boolean transfer(String fromTaxNumber,String toTaxNumber, BigDecimal amount ) throws InternalServerErrorException, TransferException, NotFoundException {
+    public Boolean transfer(String fromTaxNumber,String toTaxNumber, BigDecimal amount, String pin ) throws InternalServerErrorException, TransferException, NotFoundException, NotificationException, PinException {
         Wallet from = findWalletByTaxNumberUseCase.findByTaxNumber(fromTaxNumber);
         Wallet to = findWalletByTaxNumberUseCase.findByTaxNumber(toTaxNumber);
+
+        transactionPinValidateUseCase.validate(from.getTransactionPin());
 
 
         from.transfer(amount);
@@ -45,7 +51,7 @@ public class TransferUseCaseImp implements TransferUseCase {
             throw new InternalServerErrorException(ErrorCodeEnum.TR0003.getCode(), ErrorCodeEnum.TR0003.getMessage());
         }
         if (!userNotificationUseCase.notificate(transaction, to.getUser().getEmail())){
-            throw new NotFoundException(ErrorCodeEnum.TR0002.getCode(), ErrorCodeEnum.TR0002.getMessage());
+            throw new NotificationException(ErrorCodeEnum.TR0002.getCode(), ErrorCodeEnum.TR0002.getMessage());
         }
         return true;
     }

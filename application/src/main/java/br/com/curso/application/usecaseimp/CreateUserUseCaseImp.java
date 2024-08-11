@@ -19,8 +19,6 @@ public class CreateUserUseCaseImp implements CreateUserUseCase {
     private EmailAvailableUseCase emailAvailableUseCase;
     private CreateUserGateway createUserGateway;
 
-
-
     public CreateUserUseCaseImp(TaxNumberAvailableUseCaseImp taxNumberAvailableUseCaseImp,
                                 EmailAvailableUseCase emailAvailableUseCase,
                                 CreateUserGateway createUserGateway)
@@ -28,9 +26,7 @@ public class CreateUserUseCaseImp implements CreateUserUseCase {
         this.taxNumberAvailableUseCaseImp = taxNumberAvailableUseCaseImp;
         this.emailAvailableUseCase = emailAvailableUseCase;
         this.createUserGateway = createUserGateway;
-
     }
-
     @Override
     public void create(User user, String pin) throws TaxNumberException, EmailException, TransactionPinException, InternalServerErrorException {
         if (!taxNumberAvailableUseCaseImp.isTaxNumberAvailable(user.getTaxNumber().getValue())){
@@ -40,12 +36,8 @@ public class CreateUserUseCaseImp implements CreateUserUseCase {
             throw new EmailException(ErrorCodeEnum.ON0003.getCode(), ErrorCodeEnum.ON0003.getMessage());
         }
 
-        if (!createUserGateway.create(user,
-                new Wallet(BigDecimal.ZERO, user),
-                new TransactionPin(user,pin))) {
+        if (!createUserGateway.create(user, new Wallet(new TransactionPin(pin),BigDecimal.ZERO,user))) {
             throw new InternalServerErrorException(ErrorCodeEnum.ON0004.getCode(), ErrorCodeEnum.ON0004.getMessage());
         }
-
-
     }
 }
