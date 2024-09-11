@@ -13,29 +13,28 @@ public class User {
     private TaxNumber taxNumber;
     private String fullNome;
     private UserTypeEnum type;
-    private TransactionPin transactionPin;
     private LocalDateTime createdAt;
     private LocalDateTime updateddAt;
 
-    public User(UUID id, String email, String password, TaxNumber taxNumber, String fullNome, UserTypeEnum type, TransactionPin transactionPin, LocalDateTime createdAt, LocalDateTime updateddAt) {
+    public User(UUID id, String email, String password, TaxNumber taxNumber, String fullNome, UserTypeEnum type, LocalDateTime createdAt, LocalDateTime updateddAt) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.taxNumber = taxNumber;
         this.fullNome = fullNome;
         this.type = type;
-        this.transactionPin = transactionPin;
+
         this.createdAt = createdAt;
         this.updateddAt = updateddAt;
     }
 
-    public User(String email, String password, TaxNumber taxNumber, String fullNome, UserTypeEnum type, TransactionPin transactionPin) {
+    public User(String email, String password, TaxNumber taxNumber, String fullNome, UserTypeEnum type) {
         this.email = email;
         this.password = password;
         this.taxNumber = taxNumber;
         this.fullNome = fullNome;
         this.type = type;
-        this.transactionPin = transactionPin;
+
         this.createdAt = LocalDateTime.now();
     }
 
@@ -90,14 +89,6 @@ public class User {
         this.type = type;
     }
 
-    public TransactionPin getTransactionPin() {
-        return transactionPin;
-    }
-
-    public void setTransactionPin(TransactionPin transactionPin) {
-        this.transactionPin = transactionPin;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -115,11 +106,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(taxNumber, user.taxNumber) && Objects.equals(fullNome, user.fullNome) && type == user.type && Objects.equals(transactionPin, user.transactionPin) && Objects.equals(createdAt, user.createdAt) && Objects.equals(updateddAt, user.updateddAt);
+        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(taxNumber, user.taxNumber) && Objects.equals(fullNome, user.fullNome) && type == user.type && Objects.equals(createdAt, user.createdAt) && Objects.equals(updateddAt, user.updateddAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, taxNumber, fullNome, type, transactionPin, createdAt, updateddAt);
+        return Objects.hash(id, email, password, taxNumber, fullNome, type, createdAt, updateddAt);
     }
 }

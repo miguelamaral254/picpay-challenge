@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Generated;
-import org.hibernate.usertype.UserType;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -35,7 +33,7 @@ public class UserEntity {
     private UserTypeEnum Type;
     @Column(name = "CreatedAt", nullable = false)
     private LocalDateTime CreatedAt;
-    @Column(name = "UpdatedAt", nullable = false)
+    @Column(name = "UpdatedAt")
     private LocalDateTime UpdatedAt;
 
 

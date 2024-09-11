@@ -27,7 +27,14 @@ public class TransactionPinEntity {
     private boolean blocked;
     @Column(name = "CreatedAt", nullable = false)
     private LocalDateTime CreatedAt;
-    @Column(name = "UpdatedAt", nullable = false)
+    @Column(name = "UpdatedAt")
     private LocalDateTime UpdatedAt;
 
+    public TransactionPinEntity(String pin, int attempt, boolean blocked, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.pin = pin;
+        this.attempt = attempt;
+        this.blocked = blocked;
+        CreatedAt = createdAt;
+        UpdatedAt = updatedAt;
+    }
 }

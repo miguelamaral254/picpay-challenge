@@ -29,7 +29,7 @@ public class WalletEntity {
 
     @Column(name = "CreatedAt", nullable = false)
     private LocalDateTime CreatedAt;
-    @Column(name = "UpdatedAt", nullable = false)
+    @Column(name = "UpdatedAt")
     private LocalDateTime UpdatedAt;
 
 }
